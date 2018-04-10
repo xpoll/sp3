@@ -33,6 +33,15 @@ package org.springframework.beans.factory;
  *
  * @author Chris Beams
  * @since 3.1
+ * 
+ * 标记超级接口，表示一个bean有资格通过一个回调式方法被Spring容器通知一个特定的框架对象。 实际的方法签名由各个子接口确定，但通常应由一个只接受一个参数的void返回方法组成。
+ * 请注意，仅实现Aware不提供默认功能。 相反，处理必须明确完成，例如在BeanPostProcessor中。
+ * 有关处理* Aware接口回调的示例，
+ * 请参阅
+ * org.springframework.context.support.ApplicationContextAwareProcessor
+ * 和
+ * org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory。
+ * 
  */
 public interface Aware {
 

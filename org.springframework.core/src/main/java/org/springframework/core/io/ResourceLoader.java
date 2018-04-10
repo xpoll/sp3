@@ -37,6 +37,13 @@ import org.springframework.util.ResourceUtils;
  * @see org.springframework.core.io.support.ResourcePatternResolver
  * @see org.springframework.context.ApplicationContext
  * @see org.springframework.context.ResourceLoaderAware
+ * 
+ * 加载资源策略的接口，一个{@link org.springframework.context.ApplicationContext}需要此功能，
+ * 并加以扩展{@link org.springframework.core.io.support.ResourcePatternResolver}支持
+ * 
+ * {@link DefaultResourceLoader} 是一个独立的可在ApplicationContext外部使用的实现，也可以由{@link ResourceEditor}使用
+ * 
+ * 在ApplicationContext中运行时，使用特定上下文的资源加载策略，可以从Strings中填充Resource和Resource数组类型的Bean属性。
  */
 public interface ResourceLoader {
 

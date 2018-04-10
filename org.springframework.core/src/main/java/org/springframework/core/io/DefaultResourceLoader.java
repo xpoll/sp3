@@ -37,8 +37,15 @@ import org.springframework.util.StringUtils;
  * @since 10.03.2004
  * @see FileSystemResourceLoader
  * @see org.springframework.context.support.ClassPathXmlApplicationContext
+ * 
+ * @me
+ * {@link ResourceLoader}接口的默认实现。
+ * 由{@link ResourceEditor}，作为{@link org.springframework.context.support.AbstractApplicationContext}的基类。
+ * 也可以独立使用。
+ * 
  */
 public class DefaultResourceLoader implements ResourceLoader {
+    
 
 	private ClassLoader classLoader;
 
