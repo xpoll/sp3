@@ -30,6 +30,11 @@ package org.springframework.beans.factory;
  * @since 12.08.2003
  * @see org.springframework.beans.factory.support.RootBeanDefinition#getDestroyMethodName
  * @see org.springframework.context.ConfigurableApplicationContext#close
+ * 
+ * 接口由要销毁资源的Bean实现。如果BeanFactory要配置一个缓存单例，它应该调用destroy方法。
+ * 应用上下文应该去关闭所有单例。
+ * 
+ * 实现DisposableBean的替代方法是指定一个自定义的destroy方法，例如在一个XML bean定义中。 有关所有bean生命周期方法的列表，请参阅BeanFactory javadocs。
  */
 public interface DisposableBean {
 

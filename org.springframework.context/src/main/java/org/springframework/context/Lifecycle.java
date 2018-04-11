@@ -43,6 +43,8 @@ package org.springframework.context;
  * @see ConfigurableApplicationContext
  * @see org.springframework.jms.listener.AbstractMessageListenerContainer
  * @see org.springframework.scheduling.quartz.SchedulerFactoryBean
+ * 
+ * 接口定义了启动/停止生命周期的控制方法。典型的用例是控制异步处理。
  */
 public interface Lifecycle {
 
