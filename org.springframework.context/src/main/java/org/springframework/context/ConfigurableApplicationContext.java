@@ -35,6 +35,7 @@ import org.springframework.core.env.Environment;
  * @author Juergen Hoeller
  * @author Chris Beams
  * @since 03.11.2003
+ * SPI
  */
 public interface ConfigurableApplicationContext extends ApplicationContext, Lifecycle {
 
