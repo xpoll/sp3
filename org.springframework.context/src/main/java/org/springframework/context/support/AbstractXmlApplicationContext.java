@@ -41,6 +41,10 @@ import org.springframework.core.io.Resource;
  * @see #getConfigResources
  * @see #getConfigLocations
  * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+ * 
+ * org.springframework.context.ApplicationContext实现的便捷基类，从包含由org.springframework.beans.factory.xml.XmlBeanDefinitionReader理解的bean定义的XML文档中绘制配置。
+ * 子类只需实现getConfigResources和/或getConfigLocations方法。 
+ * 此外，它们可能会重写getResourceByPath挂钩来以特定于环境的方式解释相对路径，并且/或者getResourcePatternResolver用于扩展模式解析。
  */
 public abstract class AbstractXmlApplicationContext extends AbstractRefreshableConfigApplicationContext {
 

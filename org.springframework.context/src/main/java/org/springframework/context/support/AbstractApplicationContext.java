@@ -125,6 +125,15 @@ import org.springframework.util.ObjectUtils;
  * @see org.springframework.context.event.ApplicationEventMulticaster
  * @see org.springframework.context.ApplicationListener
  * @see org.springframework.context.MessageSource
+ * 
+ * org.springframework.context.ApplicationContext接口的抽象实现。不要求用于配置的存储类型;只是实现公共上下文功能。使用Template Method设计模式，要求具体的子类实现抽象方法。
+ * 与普通的BeanFactory相比，ApplicationContext应该检测在其内部bean工厂中定义的特殊bean：
+ *  因此，该类会自动注册在上下文中定义为bean的BeanFactoryPostProcessors，BeanPostProcessors和ApplicationListener。
+ * org.springframework.context.MessageSource也可以作为上下文中的bean提供，名称为“messageSource”;否则，将消息解析委派给父上下文。
+ * 此外，用于应用程序事件的多播器可以作为上下文中类型为org.springframework.context.event.ApplicationEventMulticaster的“applicationEventMulticaster”bean提供;
+ * 否则，将使用类型为org.springframework.context.event.SimpleApplicationEventMulticaster的默认多媒体播放器。
+ * 通过扩展org.springframework.core.io.DefaultResourceLoader实现资源加载。
+ * 因此，除非getResourceByPath方法在子类中被覆盖，否则将非URL资源路径视为类路径资源（支持包含程序包路径的完整类路径资源名称，例如“mypackage / myresource.dat”）。
  */
 public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		implements ConfigurableApplicationContext, DisposableBean {

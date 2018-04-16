@@ -62,11 +62,21 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
  * @see ClassPathXmlApplicationContext
  * @see FileSystemXmlApplicationContext
  * @see org.springframework.context.annotation.AnnotationConfigApplicationContext
+ * 
+ * org.springframework.context.ApplicationContext实现的基类，应该支持多次调用refresh（），每次创建一个新的内部bean工厂实例。
+ * 通常（但不一定），这样的上下文将由一组配置位置驱动，以从中加载bean定义。
+ * 子类实现的唯一方法是loadBeanDefinitions，它在每次刷新时被调用。
+ * 具体实现应该将bean定义加载到给定的org.springframework.beans.factory.support.DefaultListableBeanFactory中，通常委托给一个或多个特定的bean定义读取器。
+ * 请注意，WebApplicationContexts有一个类似的基类。 
+ * org.springframework.web.context.support.AbstractRefreshableWebApplicationContext提供了相同的子类化策略，但还预先实现了Web环境的所有上下文功能。
+ * 还有一种预定义的方式来接收Web上下文的配置位置。
+ * 这个基类的具体独立子类，以特定的bean定义格式读取，是ClassPathXmlApplicationContext和FileSystemXmlApplicationContext，它们都来自通用的AbstractXmlApplicationContext基类; 
+ * org.springframework.context.annotation.AnnotationConfigApplicationContext支持@ Configuration-annotated类作为bean定义的来源。
  */
 public abstract class AbstractRefreshableApplicationContext extends AbstractApplicationContext {
 
 	private Boolean allowBeanDefinitionOverriding;
-
+	
 	private Boolean allowCircularReferences;
 
 	/** Bean factory for this context */

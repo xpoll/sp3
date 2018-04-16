@@ -31,6 +31,9 @@ package org.springframework.beans.factory;
  * @see BeanFactory
  * @see org.springframework.beans.factory.support.RootBeanDefinition#getInitMethodName
  * @see org.springframework.context.ApplicationContextAware
+ * 
+ * 接口由bean实现，当BeanFactory设置了它们的所有属性后需要做出反应：例如，执行自定义初始化，或仅检查是否已设置所有必需属性。
+ * 实现InitializingBean的另一种方法是指定一个自定义的init方法，例如在一个XML bean定义中。 有关所有bean生命周期方法的列表，请参阅BeanFactory javadocs。
  */
 public interface InitializingBean {
 	

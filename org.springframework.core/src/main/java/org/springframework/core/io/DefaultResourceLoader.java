@@ -55,6 +55,8 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * <p>ClassLoader access will happen using the thread context class loader
 	 * at the time of this ResourceLoader's initialization.
 	 * @see java.lang.Thread#getContextClassLoader()
+	 * 
+	 * 创建一个默认的ClassLoader
 	 */
 	public DefaultResourceLoader() {
 		this.classLoader = ClassUtils.getDefaultClassLoader();
@@ -64,6 +66,8 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * Create a new DefaultResourceLoader.
 	 * @param classLoader the ClassLoader to load class path resources with, or <code>null</code>
 	 * for using the thread context class loader at the time of actual resource access
+	 * 
+	 * Constructor
 	 */
 	public DefaultResourceLoader(ClassLoader classLoader) {
 		this.classLoader = classLoader;
@@ -75,6 +79,9 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * for using the thread context class loader at the time of actual resource access.
 	 * <p>The default is that ClassLoader access will happen using the thread context
 	 * class loader at the time of this ResourceLoader's initialization.
+	 * 
+	 * 指定一个ClassLoader加载器。
+	 * 默认情况下是有默认值的
 	 */
 	public void setClassLoader(ClassLoader classLoader) {
 		this.classLoader = classLoader;
@@ -85,6 +92,8 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * <p>Will get passed to ClassPathResource's constructor for all
 	 * ClassPathResource objects created by this resource loader.
 	 * @see ClassPathResource
+	 * 
+	 * 返回一个ClassLoader，如果为空，则返回默认构造方法的ClassLoader
 	 */
 	public ClassLoader getClassLoader() {
 		return (this.classLoader != null ? this.classLoader : ClassUtils.getDefaultClassLoader());

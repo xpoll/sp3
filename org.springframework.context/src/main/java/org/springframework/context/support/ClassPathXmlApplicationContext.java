@@ -47,6 +47,11 @@ import org.springframework.util.Assert;
  * @see #getResource
  * @see #getResourceByPath
  * @see GenericApplicationContext
+ * 
+ * 独立XML应用程序上下文，从类路径中获取上下文定义文件，将纯路径解释为包含程序包路径的类路径资源名称（例如“mypackage / myresource.txt”）。对于测试用具以及JAR中嵌入的应用程序上下文很有用。
+ * 配置位置默认值可以通过getConfigLocations覆盖，配置位置既可以表示具体文件（如“/myfiles/context.xml”），也可以表示为“/myfiles/*-context.xml”等Ant样式模式（请参阅org.springframework.util.AntPathMatcher javadoc获取模式细节）。
+ * 注意：如果有多个配置位置，稍后的bean定义将覆盖在先前加载的文件中定义的定义。这可以用来通过额外的XML文件故意重写某些bean定义。
+ * 这是一个简单的一站式便捷的ApplicationContext。考虑将GenericApplicationContext类与org.springframework.beans.factory.xml.XmlBeanDefinitionReader结合使用，以实现更灵活的上下文设置。
  */
 public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContext {
 
@@ -154,7 +159,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	 * @see org.springframework.context.support.GenericApplicationContext
 	 * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
 	 */
-	public ClassPathXmlApplicationContext(String path, Class clazz) throws BeansException {
+	public ClassPathXmlApplicationContext(String path, Class<?> clazz) throws BeansException {
 		this(new String[] {path}, clazz);
 	}
 
@@ -168,7 +173,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	 * @see org.springframework.context.support.GenericApplicationContext
 	 * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
 	 */
-	public ClassPathXmlApplicationContext(String[] paths, Class clazz) throws BeansException {
+	public ClassPathXmlApplicationContext(String[] paths, Class<?> clazz) throws BeansException {
 		this(paths, clazz, null);
 	}
 
@@ -184,7 +189,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	 * @see org.springframework.context.support.GenericApplicationContext
 	 * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
 	 */
-	public ClassPathXmlApplicationContext(String[] paths, Class clazz, ApplicationContext parent)
+	public ClassPathXmlApplicationContext(String[] paths, Class<?> clazz, ApplicationContext parent)
 			throws BeansException {
 
 		super(parent);

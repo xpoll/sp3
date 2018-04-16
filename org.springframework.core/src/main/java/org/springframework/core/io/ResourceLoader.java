@@ -69,6 +69,12 @@ public interface ResourceLoader {
 	 * @see #CLASSPATH_URL_PREFIX
 	 * @see org.springframework.core.io.Resource#exists
 	 * @see org.springframework.core.io.Resource#getInputStream
+	 * 
+	 * 返回指定资源的资源句柄。 该句柄应始终是可重用的资源描述符，允许多个Resource.getInputStream（）调用。
+	 * 必须支持完全限定的网址，例如“文件：C：/test.dat”。
+	 * 必须支持类路径伪网址，例如“类路径：TEST.DAT”。
+	 * 应该支持相对文件路径，例如“WEB-INF/ TEST.DAT”。 （这将是特定于实现的，通常由ApplicationContext实现提供。）
+	 * 请注意，资源句柄并不意味着现有资源; 你需要调用Resource.exists来检查是否存在。
 	 */
 	Resource getResource(String location);
 
@@ -78,6 +84,9 @@ public interface ResourceLoader {
 	 * in a uniform manner with the ResourceLoader, rather than relying
 	 * on the thread context ClassLoader.
 	 * @return the ClassLoader (never <code>null</code>)
+	 * 
+	 * 公开此ResourceLoader使用的ClassLoader。
+	 * 需要直接访问ClassLoader的客户端可以使用ResourceLoader以统一的方式执行此操作，而不是依赖线程上下文ClassLoader。
 	 */
 	ClassLoader getClassLoader();
 
