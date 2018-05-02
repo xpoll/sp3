@@ -2,7 +2,7 @@
 .factorypath
 *.class
 *.log
-**/target/**
+*/target/**
 **/.settings/**
 .classpath
 .svn/**
