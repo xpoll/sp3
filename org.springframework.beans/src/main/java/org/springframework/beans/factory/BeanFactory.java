@@ -84,6 +84,44 @@ import org.springframework.beans.BeansException;
  * <p>On shutdown of a bean factory, the following lifecycle methods apply:<br>
  * 1. DisposableBean's <code>destroy</code><br>
  * 2. a custom destroy-method definition
+ * 
+ * 用于访问Spring bean容器的根接口。这是一个bean容器的基本客户端视图;
+ * 更多的接口如ListableBeanFactory和org.springframework.beans.factory.config.ConfigurableBeanFactory可用于特定目的。
+ * 
+ * 该接口由包含多个bean定义的对象实现，每个定义由一个String名称唯一标识。
+ * 根据bean的定义，工厂将返回一个包含对象的独立实例（Prototype设计模式）或一个共享实例（一个优于Singleton设计模式的替代方案，实例在该范围内是一个单例的工厂）。
+ * 将返回哪种类型的实例取决于bean工厂配置：API是相同的。自Spring 2.0以来，根据具体的应用上下文（例如Web环境中的“请求”和“会话”范围），可以使用更多范围。
+ * 
+ * 这种方法的重点在于，BeanFactory是应用程序组件的中央注册表，集中了应用程序组件的配置（例如，单个对象不需要读取属性文件）。
+ * 有关此方法的优点的讨论，请参阅“Expert One-on-One J2EE Design and Development”的第4章和第11章。
+ * 
+ * 请注意，通常依赖依赖注入（“push”配置）通过setter或构造函数来配置应用程序对象通常会更好，而不是像BeanFactory查找那样使用任何形式的“pull”配置。
+ * Spring的依赖注入功能是使用这个BeanFactory接口及其子接口实现的。
+ * 
+ * 通常，BeanFactory会加载存储在配置源（如XML文档）中的bean定义，并使用org.springframework.beans包来配置bean。
+ * 但是，实现可以直接在Java代码中直接返回它创建的Java对象。对于如何存储定义没有限制：LDAP，RDBMS，XML，属性文件等。
+ * 鼓励实现支持bean间的引用（依赖注入）。
+ * 
+ * 与ListableBeanFactory中的方法相比，此接口中的所有操作也会检查父工厂，如果这是HierarchicalBeanFactory。
+ * 如果在这个工厂实例中没有找到一个bean，那么会询问直接的父工厂。这个工厂实例中的bean应该覆盖任何父级工厂中的同名bean。
+ * 
+ * Bean工厂实现应该尽可能支持标准的bean生命周期接口。全套初始化方法及其标准顺序是：
+ * 1. BeanNameAware的setBeanName
+ * 2. BeanClassLoaderAware的setBeanClassLoader
+ * 3. BeanFactoryAware的setBeanFactory
+ * 4. ResourceLoaderAware的setResourceLoader（仅适用于在应用程序上下文中运行）
+ * 5. ApplicationEventPublisherAware的setApplicationEventPublisher（仅适用于在应用程序上下文中运行时）
+ * 6. MessageSourceAware的setMessageSource（仅适用于在应用程序上下文中运行）
+ * 7. ApplicationContextAware的setApplicationContext（仅适用于在应用程序上下文中运行）
+ * 8. ServletContextAware的setServletContext（仅适用于在Web应用程序上下文中运行）
+ * 9. PostProcessBefore BeanPostProcessor的初始化方法
+ * 10. InitializingBean的afterPropertiesSet
+ * 11. 一个自定义的init-method定义
+ * 12. PostProcessAfterInPialization方法的BeanPostProcessors
+ * 
+ * 关闭一个bean工厂时，下列生命周期方法适用：
+ * 1.DisposableBean's destroy
+ * 2.自定义销毁方法定义
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

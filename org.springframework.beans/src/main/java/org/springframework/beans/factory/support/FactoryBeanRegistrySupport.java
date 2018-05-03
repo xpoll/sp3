@@ -42,21 +42,23 @@ import org.springframework.beans.factory.FactoryBeanNotInitializedException;
  */
 public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanRegistry {
 
-	/** Cache of singleton objects created by FactoryBeans: FactoryBean name --> object */
+	/** Cache of singleton objects created by FactoryBeans: FactoryBean name --> object *//*由FactoryBean创建的单例对象的缓存：FactoryBean名称 - >对象*/
 	private final Map<String, Object> factoryBeanObjectCache = new ConcurrentHashMap<String, Object>();
 
 
 	/**
 	 * Determine the type for the given FactoryBean.
+	 * 确定给定FactoryBean的类型。
+	 * 
 	 * @param factoryBean the FactoryBean instance to check
 	 * @return the FactoryBean's object type,
 	 * or <code>null</code> if the type cannot be determined yet
 	 */
-	protected Class getTypeForFactoryBean(final FactoryBean factoryBean) {
+	protected Class<?> getTypeForFactoryBean(final FactoryBean<?> factoryBean) {
 		try {
 			if (System.getSecurityManager() != null) {
-				return AccessController.doPrivileged(new PrivilegedAction<Class>() {
-					public Class run() {
+				return AccessController.doPrivileged(new PrivilegedAction<Class<?>>() {
+					public Class<?> run() {
 						return factoryBean.getObjectType();
 					}
 				}, getAccessControlContext());
@@ -76,6 +78,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 	/**
 	 * Obtain an object to expose from the given FactoryBean, if available
 	 * in cached form. Quick check for minimal synchronization.
+	 * 获取一个对象，以暴露给定的FactoryBean，如果缓存形式可用的话。 快速检查最小同步。
 	 * @param beanName the name of the bean
 	 * @return the object obtained from the FactoryBean,
 	 * or <code>null</code> if not available
@@ -87,6 +90,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 
 	/**
 	 * Obtain an object to expose from the given FactoryBean.
+	 * 从给定的FactoryBean获取一个暴露的对象。
 	 * @param factory the FactoryBean instance
 	 * @param beanName the name of the bean
 	 * @param shouldPostProcess whether the bean is subject for post-processing
@@ -94,7 +98,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 	 * @throws BeanCreationException if FactoryBean object creation failed
 	 * @see org.springframework.beans.factory.FactoryBean#getObject()
 	 */
-	protected Object getObjectFromFactoryBean(FactoryBean factory, String beanName, boolean shouldPostProcess) {
+	protected Object getObjectFromFactoryBean(FactoryBean<?> factory, String beanName, boolean shouldPostProcess) {
 		if (factory.isSingleton() && containsSingleton(beanName)) {
 			synchronized (getSingletonMutex()) {
 				Object object = this.factoryBeanObjectCache.get(beanName);
@@ -112,6 +116,8 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 
 	/**
 	 * Obtain an object to expose from the given FactoryBean.
+	 * 从给定的FactoryBean获取一个暴露的对象。
+	 * 
 	 * @param factory the FactoryBean instance
 	 * @param beanName the name of the bean
 	 * @param shouldPostProcess whether the bean is subject for post-processing
@@ -120,7 +126,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 	 * @see org.springframework.beans.factory.FactoryBean#getObject()
 	 */
 	private Object doGetObjectFromFactoryBean(
-			final FactoryBean factory, final String beanName, final boolean shouldPostProcess)
+			final FactoryBean<?> factory, final String beanName, final boolean shouldPostProcess)
 			throws BeanCreationException {
 
 		Object object;
@@ -190,12 +196,12 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 	 * @return the bean instance as FactoryBean
 	 * @throws BeansException if the given bean cannot be exposed as a FactoryBean
 	 */
-	protected FactoryBean getFactoryBean(String beanName, Object beanInstance) throws BeansException {
+	protected FactoryBean<?> getFactoryBean(String beanName, Object beanInstance) throws BeansException {
 		if (!(beanInstance instanceof FactoryBean)) {
 			throw new BeanCreationException(beanName,
 					"Bean instance of type [" + beanInstance.getClass() + "] is not a FactoryBean");
 		}
-		return (FactoryBean) beanInstance;
+		return (FactoryBean<?>) beanInstance;
 	}
 
 	/**

@@ -18,10 +18,12 @@
 		http://www.springframework.org/schema/task/spring-task-3.1.xsd">
     
     <bean id="bike" class="cn.blmdz.spring.Bike" />
-    <context:component-scan base-package="cn.blmdz"></context:component-scan>
     <!-- <context:property-placeholder location="classpath:/config/properties/global.properties" ignore-unresolvable="true"/> -->
+    <!-- 
+    <context:component-scan base-package="cn.blmdz"></context:component-scan>
     <context:annotation-config />
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
     <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
     <import resource="classpath:spring-dubboservice.xml" />
+     -->
 </beans>

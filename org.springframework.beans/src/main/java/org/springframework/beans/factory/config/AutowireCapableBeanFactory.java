@@ -49,6 +49,21 @@ import org.springframework.beans.factory.BeanFactory;
  * interface, which exposes the internal BeanFactory even when running in an
  * ApplicationContext, to get access to an AutowireCapableBeanFactory:
  * simply cast the passed-in BeanFactory to AutowireCapableBeanFactory.
+ * 
+ * org.springframework.beans.factory.BeanFactory接口的扩展需要由能够自动装配的bean工厂来实现，前提是他们想为现有的bean实例公开这个功能。
+ * 
+ * BeanFactory的这个子接口并不意味着在普通的应用程序代码中使用：对于典型的用例，
+ * 坚持使用org.springframework.beans.factory.BeanFactory或org.springframework.beans.factory.ListableBeanFactory。
+ * 
+ * 其他框架的集成代码可以利用此接口来连接和填充Spring不控制生命周期的现有bean实例。
+ * 例如，这对于WebWork Actions和Tapestry Page对象特别有用。
+ * 
+ * 请注意，该接口不是由org.springframework.context.ApplicationContext Facades实现的，因为应用程序代码很少使用它。
+ * 也就是说，它也可以从应用程序上下文中获得，可以通过ApplicationContext的org.springframework.context.ApplicationContext.getAutowireCapableBeanFactory（）方法访问。
+ * 
+ * 您也可以实现org.springframework.beans.factory.BeanFactoryAware接口，
+ * 即使在ApplicationContext中运行时也会公开内部BeanFactory，以访问AutowireCapableBeanFactory：
+ * 只需将传入的BeanFactory转换为AutowireCapableBeanFactory即可。
  *
  * @author Juergen Hoeller
  * @since 04.12.2003
@@ -156,6 +171,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 
 	/**
 	 * Resolve the specified dependency against the beans defined in this factory.
+	 * 根据此工厂中定义的bean解析指定的依赖项。
 	 * @param descriptor the descriptor for the dependency
 	 * @param beanName the name of the bean which declares the present dependency
 	 * @return the resolved object, or <code>null</code> if none found
@@ -185,7 +201,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * @see #AUTOWIRE_BY_TYPE
 	 * @see #AUTOWIRE_CONSTRUCTOR
 	 */
-	Object createBean(Class beanClass, int autowireMode, boolean dependencyCheck) throws BeansException;
+	Object createBean(Class<?> beanClass, int autowireMode, boolean dependencyCheck) throws BeansException;
 
 	/**
 	 * Instantiate a new bean instance of the given class with the specified autowire
@@ -213,7 +229,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * @see #applyBeanPostProcessorsBeforeInitialization
 	 * @see #applyBeanPostProcessorsAfterInitialization
 	 */
-	Object autowire(Class beanClass, int autowireMode, boolean dependencyCheck) throws BeansException;
+	Object autowire(Class<?> beanClass, int autowireMode, boolean dependencyCheck) throws BeansException;
 
 	/**
 	 * Autowire the bean properties of the given bean instance by name or type.
