@@ -46,6 +46,20 @@ import org.springframework.beans.BeansException;
  * <p><b>NOTE:</b> With the exception of <code>getBeanDefinitionCount</code>
  * and <code>containsBeanDefinition</code>, the methods in this interface
  * are not designed for frequent invocation. Implementations may be slow.
+ * 
+ * BeanFactory接口的扩展由bean工厂实现，bean工厂可以枚举它们的所有bean实例，而不是按客户端的要求逐个尝试bean名称查找。
+ * 预加载所有bean定义的BeanFactory实现（例如基于XML的工厂）可以实现此接口。
+ * 
+ * 如果这是HierarchicalBeanFactory，则返回值不会考虑任何BeanFactory层次结构，但仅与当前工厂中定义的Bean相关。
+ * 使用BeanFactoryUtils助手类也可以在祖先工厂中考虑bean。
+ * 
+ * 这个接口中的方法只会尊重这个工厂的bean定义。
+ * 他们会忽略任何通过org.springframework.beans.factory.config.ConfigurableBeanFactory的registerSingleton方法注册的单例bean，
+ * 除getBeanNamesOfType和getBeansOfType外，它们也会检查这些手动注册的单例。
+ * 当然，BeanFactory的getBean也允许透明地访问这些特殊的bean。
+ * 但是，在典型的场景中，所有的bean都将由外部bean定义来定义，所以大多数应用程序不需要担心这种差异。
+ * 
+ * 注意：除getBeanDefinitionCount和containsBeanDefinition之外，此接口中的方法不适用于频繁调用。实现可能会很慢。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

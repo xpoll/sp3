@@ -101,6 +101,7 @@ public class DefaultListableBeanFactoryTests {
 		KnowsIfInstantiated.clearInstantiationRecord();
 		DefaultListableBeanFactory lbf = new DefaultListableBeanFactory();
 		Properties p = new Properties();
+		System.out.println(KnowsIfInstantiated.class.getName());
 		p.setProperty("x1.(class)", KnowsIfInstantiated.class.getName());
 		assertTrue("singleton not instantiated", !KnowsIfInstantiated.wasInstantiated());
 		(new PropertiesBeanDefinitionReader(lbf)).registerBeanDefinitions(p);
