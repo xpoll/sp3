@@ -80,9 +80,10 @@ public abstract class AbstractBeanDefinitionReader implements EnvironmentCapable
         System.err.println("** AbstractBeanDefinitionReader#构造方法--");
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
 		this.registry = registry;
-        System.err.println("** AbstractBeanDefinitionReader#构造方法--确定要使用的ResourceLoader。");
+		System.err.println("** AbstractBeanDefinitionReader#构造方法--确定要使用的ResourceLoader。");
 		// Determine ResourceLoader to use.
 		if (this.registry instanceof ResourceLoader) {
+            System.err.println("** AbstractBeanDefinitionReader#构造方法--本身 instanceof ResourceLoader");
 			this.resourceLoader = (ResourceLoader) this.registry;
 		}
 		else {
@@ -90,8 +91,10 @@ public abstract class AbstractBeanDefinitionReader implements EnvironmentCapable
 			this.resourceLoader = new PathMatchingResourcePatternResolver();
 		}
 
+        System.err.println("** AbstractBeanDefinitionReader#构造方法--如果可能，继承Environment");
 		// Inherit Environment if possible
 		if (this.registry instanceof EnvironmentCapable) {
+	        System.err.println("** AbstractBeanDefinitionReader#构造方法--本身 instanceof EnvironmentCapable");
 			this.environment = ((EnvironmentCapable)this.registry).getEnvironment();
 		}
 		else {

@@ -134,7 +134,6 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
 		super(registry);
         System.err.println("** XmlBeanDefinitionReader#构造方法--");
-        System.err.println("** XmlBeanDefinitionReader#构造方法.resourcesCurrentlyBeingLoaded--new NamedThreadLocal<Set<EncodedResource>>");
 	}
 
 	/**
@@ -301,7 +300,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * @throws BeanDefinitionStoreException in case of loading or parsing errors
 	 */
 	public int loadBeanDefinitions(Resource resource) throws BeanDefinitionStoreException {
-        System.err.println("** XmlBeanDefinitionReader#.loadBeanDefinitions()--new EncodedResource(resource)");
+        System.err.println("** XmlBeanDefinitionReader#.loadBeanDefinitions()--把resource用EncodedResource封装了一遍");
 		return loadBeanDefinitions(new EncodedResource(resource));
 	}
 
@@ -313,7 +312,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * @throws BeanDefinitionStoreException in case of loading or parsing errors
 	 */
 	public int loadBeanDefinitions(EncodedResource encodedResource) throws BeanDefinitionStoreException {
-        System.err.println("** XmlBeanDefinitionReader#.loadBeanDefinitions()--EncodedResource(resource)");
+        System.err.println("** XmlBeanDefinitionReader#.loadBeanDefinitions()--");
 		Assert.notNull(encodedResource, "EncodedResource must not be null");
 		if (logger.isInfoEnabled()) {
 			logger.info("Loading XML bean definitions from " + encodedResource.getResource());

@@ -30,6 +30,12 @@ import org.springframework.util.ObjectUtils;
  *
  * <p>Used as argument for operations that support to read content with
  * a specific encoding (usually through a <code>java.io.Reader</code>.
+ * 
+ * 编码资源
+ * 
+ * 持有者将org.springframework.core.io.Resource与特定的编码结合起来，用于从资源中读取数据。
+ * 
+ * 用作支持以特定编码读取内容的操作参数（通常通过java.io.Reader。）
  *
  * @author Juergen Hoeller
  * @since 1.2.6
@@ -49,7 +55,6 @@ public class EncodedResource {
 	 */
 	public EncodedResource(Resource resource) {
 		this(resource, null);
-        System.err.println("** EncodedResource#构造方法--");// TODO
 	}
 
 	/**

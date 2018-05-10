@@ -39,6 +39,7 @@ public class XmlValidationModeDetector {
 	public static final int VALIDATION_NONE = 0;
 
 	/**
+	 * 表示验证模式应该是自动猜测的，因为我们找不到明确的指示（可能在某些特殊字符或类似字符上被阻塞）。
 	 * Indicates that the validation mode should be auto-guessed, since we cannot find
 	 * a clear indication (probably choked on some special characters, or the like).
 	 */
