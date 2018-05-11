@@ -312,12 +312,13 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * @throws BeanDefinitionStoreException in case of loading or parsing errors
 	 */
 	public int loadBeanDefinitions(EncodedResource encodedResource) throws BeanDefinitionStoreException {
-        System.err.println("** XmlBeanDefinitionReader#.loadBeanDefinitions()--");
+        System.err.println("** XmlBeanDefinitionReader#.loadBeanDefinitions()--EncodedResource");
 		Assert.notNull(encodedResource, "EncodedResource must not be null");
 		if (logger.isInfoEnabled()) {
 			logger.info("Loading XML bean definitions from " + encodedResource.getResource());
 		}
 
+		// 通过属性记录已经加载的资源 TODO 这里用属性区别有什么用处？
 		Set<EncodedResource> currentResources = this.resourcesCurrentlyBeingLoaded.get();
 		if (currentResources == null) {
 			currentResources = new HashSet<EncodedResource>(4);
@@ -330,6 +331,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		try {
 			InputStream inputStream = encodedResource.getResource().getInputStream();
 			try {
+			    //{@link org.xml.sax.InputSource}
 				InputSource inputSource = new InputSource(inputStream);
 				if (encodedResource.getEncoding() != null) {
 					inputSource.setEncoding(encodedResource.getEncoding());
@@ -386,9 +388,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 */
 	protected int doLoadBeanDefinitions(InputSource inputSource, Resource resource)
 			throws BeanDefinitionStoreException {
-        System.err.println("** XmlBeanDefinitionReader#.doLoadBeanDefinitions()--");// TODO
+        System.err.println("** XmlBeanDefinitionReader#.doLoadBeanDefinitions()--加载解析为Document");
 		try {
+		    // 得到xml类型
 			int validationMode = getValidationModeForResource(resource);
+			// EntityResolver 的用法 以及 Document加载 ？
 			Document doc = this.documentLoader.loadDocument(
 					inputSource, getEntityResolver(), this.errorHandler, validationMode, isNamespaceAware());
 			return registerBeanDefinitions(doc, resource);
@@ -493,8 +497,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 */
 	public int registerBeanDefinitions(Document doc, Resource resource) throws BeanDefinitionStoreException {
         System.err.println("** XmlBeanDefinitionReader#.registerBeanDefinitions()--Document");// TODO
+        // 使用 DefaultBeanDefinitionDocumentReader 实例化 BeanDefinitionDocumentReader
 		BeanDefinitionDocumentReader documentReader = createBeanDefinitionDocumentReader();
+		// 设置环境变量
 		documentReader.setEnvironment(this.getEnvironment());
+		// 在实例化 BeanDefinitionReader 时候会将
 		int countBefore = getRegistry().getBeanDefinitionCount();
 		documentReader.registerBeanDefinitions(doc, createReaderContext(resource));
 		return getRegistry().getBeanDefinitionCount() - countBefore;
