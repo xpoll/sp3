@@ -497,13 +497,16 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 */
 	public int registerBeanDefinitions(Document doc, Resource resource) throws BeanDefinitionStoreException {
         System.err.println("** XmlBeanDefinitionReader#.registerBeanDefinitions()--Document");// TODO
-        // 使用 DefaultBeanDefinitionDocumentReader 实例化 BeanDefinitionDocumentReader
+        System.err.println("使用 DefaultBeanDefinitionDocumentReader 实例化 BeanDefinitionDocumentReader");
 		BeanDefinitionDocumentReader documentReader = createBeanDefinitionDocumentReader();
-		// 设置环境变量
+		System.err.println("设置环境变量");
 		documentReader.setEnvironment(this.getEnvironment());
-		// 在实例化 BeanDefinitionReader 时候会将
+		System.err.println("在实例化 BeanDefinitionReader 时候会将 BeanDefinitionRegistry (this)传入，默认使用继承自 DefaultListableBeanFactory 的子类");
 		int countBefore = getRegistry().getBeanDefinitionCount();
+        System.err.println(countBefore);
+        System.err.println("加载注册Bean");
 		documentReader.registerBeanDefinitions(doc, createReaderContext(resource));
+		System.err.println("返回注册Bean个数 " + (getRegistry().getBeanDefinitionCount() - countBefore));
 		return getRegistry().getBeanDefinitionCount() - countBefore;
 	}
 

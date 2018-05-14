@@ -118,6 +118,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	 * @see #setEnvironment
 	 */
 	protected void doRegisterBeanDefinitions(Element root) {
+        System.err.println("处理profile属性");
 		String profileSpec = root.getAttribute(PROFILE_ATTRIBUTE);
 		if (StringUtils.hasText(profileSpec)) {
 			Assert.state(this.environment != null, "environment property must not be null");
@@ -133,6 +134,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		// the new (child) delegate with a reference to the parent for fallback purposes,
 		// then ultimately reset this.delegate back to its original (parent) reference.
 		// this behavior emulates a stack of delegates without actually necessitating one.
+        System.err.println("专门处理解析");
 		BeanDefinitionParserDelegate parent = this.delegate;
 		this.delegate = createHelper(readerContext, root, parent);
 
@@ -171,6 +173,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	 * @param root the DOM root element of the document
 	 */
 	protected void parseBeanDefinitions(Element root, BeanDefinitionParserDelegate delegate) {
+        System.err.println("对Beans 的处理");
 		if (delegate.isDefaultNamespace(root)) {
 			NodeList nl = root.getChildNodes();
 			for (int i = 0; i < nl.getLength(); i++) {
@@ -178,9 +181,11 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 				if (node instanceof Element) {
 					Element ele = (Element) node;
 					if (delegate.isDefaultNamespace(ele)) {
+				        System.err.println("对Bean 的处理");
 						parseDefaultElement(ele, delegate);
 					}
 					else {
+				        System.err.println("对Bean 的处理");
 						delegate.parseCustomElement(ele);
 					}
 				}
@@ -193,16 +198,20 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 
 	private void parseDefaultElement(Element ele, BeanDefinitionParserDelegate delegate) {
 		if (delegate.nodeNameEquals(ele, IMPORT_ELEMENT)) {
+            System.err.println("对 import 标签的处理");
 			importBeanDefinitionResource(ele);
 		}
 		else if (delegate.nodeNameEquals(ele, ALIAS_ELEMENT)) {
+            System.err.println("对 alias 标签的处理");
 			processAliasRegistration(ele);
 		}
 		else if (delegate.nodeNameEquals(ele, BEAN_ELEMENT)) {
+            System.err.println("对 bean 标签的处理");
 			processBeanDefinition(ele, delegate);
 		}
 		else if (delegate.nodeNameEquals(ele, NESTED_BEANS_ELEMENT)) {
 			// recurse
+            System.err.println("对 beans 标签的处理");
 			doRegisterBeanDefinitions(ele);
 		}
 	}
@@ -336,6 +345,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	 * @see #getReaderContext()
 	 */
 	protected void preProcessXml(Element root) {
+        System.err.println("解析前处理。。留给子类实现");
 	}
 
 	/**
@@ -349,6 +359,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	 * @see #getReaderContext()
 	 */
 	protected void postProcessXml(Element root) {
+        System.err.println("解析后处理。。留给子类实现");
 	}
 
 }
