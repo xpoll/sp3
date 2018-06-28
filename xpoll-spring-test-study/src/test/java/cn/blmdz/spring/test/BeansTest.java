@@ -16,7 +16,7 @@ public class BeansTest {
         // ApplicationContext ac = new ClassPathXmlApplicationContext("classpath:bean-servlet.xml");
         // System.out.println(ac);
 
-        Resource resource = new ClassPathResource("bean-servlet.xml");
+        Resource resource = new ClassPathResource("bean-servlet2.xml");
 //        InputStream in = resource.getInputStream();
 //      1.  
 //        Reader reader = new InputStreamReader(in, "UTF-8");
@@ -44,6 +44,7 @@ public class BeansTest {
         
         BeanFactory bf = new XmlBeanFactory(resource);
         Bike bike = (Bike) bf.getBean("bike");
+        bike = (Bike) bf.getBean("bike");
 
         System.out.println(bike.getName());
         System.out.println(bike instanceof FactoryBean);
