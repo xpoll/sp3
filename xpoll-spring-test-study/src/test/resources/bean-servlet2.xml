@@ -5,9 +5,18 @@
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd" >
         
-    <bean class="cn.blmdz.spring.Bike">
+    <bean name="bike" class="cn.blmdz.spring.Bike" abstract="false" lazy-init="default" autowire="default" autowire-candidate="default"
+        depends-on="foo;" primary="true" >
+        <description>
+            descriptiondescriptiondescriptiondescriptiondescription
+        </description>
+        <meta key="name" value="name-meta"/>
         <property name="name">
+            <description>
+                fffffffffffffffffffff
+            </description>
             <value>摩拜</value>
         </property>
     </bean>
+    <bean id="foo" class="java.lang.String"/>
 </beans> 
