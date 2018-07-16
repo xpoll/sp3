@@ -19,4 +19,11 @@
         </property>
     </bean>
     <bean id="foo" class="java.lang.String"/>
+    
+    <bean id="lookupMethod" class="cn.blmdz.spring.LookUpMethod">
+        <lookup-method name="getBean" bean="desk" />
+    </bean>
+    
+    <bean id="desk" class="cn.blmdz.spring.Desk"/>
+    
 </beans> 

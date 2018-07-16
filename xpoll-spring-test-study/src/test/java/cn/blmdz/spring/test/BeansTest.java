@@ -7,6 +7,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import cn.blmdz.spring.Bike;
+import cn.blmdz.spring.LookUpMethod;
 
 @SuppressWarnings("deprecation")
 public class BeansTest {
@@ -44,10 +45,11 @@ public class BeansTest {
         
         BeanFactory bf = new XmlBeanFactory(resource);
         Bike bike = (Bike) bf.getBean("bike");
-        bike = (Bike) bf.getBean("bike");
 
         System.out.println(bike.getName());
-        System.out.println(bike instanceof FactoryBean);
+
+        LookUpMethod lookupMethod = (LookUpMethod) bf.getBean("lookupMethod");
+        lookupMethod.show();
 
     }
 }
