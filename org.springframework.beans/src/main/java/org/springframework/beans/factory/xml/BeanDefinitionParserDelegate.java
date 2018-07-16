@@ -540,6 +540,12 @@ public class BeanDefinitionParserDelegate {
 			Element ele, String beanName, BeanDefinition containingBean) {
 
 		this.parseState.push(new BeanEntry(beanName));
+		
+		System.err.println("Element节点属性");
+		
+        for (int i = 0; i < ele.getAttributes().getLength(); i++) {
+            System.out.println(ele.getAttributes().item(i).getNodeName() + ": " + ele.getAttributes().item(i).getNodeValue());
+        }
 
 		String className = null;
 		System.err.println("解析class属性");

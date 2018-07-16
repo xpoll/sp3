@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd" >
+        
+    <bean name="bike" class="cn.blmdz.spring.Bike" abstract="false" lazy-init="default" autowire="default" autowire-candidate="default"
+        depends-on="foo;" primary="true" >
+        <description>
+            descriptiondescriptiondescriptiondescriptiondescription
+        </description>
+        <meta key="name" value="name-meta"/>
+        <property name="name">
+            <description>
+                fffffffffffffffffffff
+            </description>
+            <value>摩拜</value>
+        </property>
+    </bean>
+    <bean id="foo" class="java.lang.String"/>
+    
+    <bean id="lookupMethod" class="cn.blmdz.spring.LookUpMethod">
+        <lookup-method name="getBean" bean="desk" />
+    </bean>
+    
+    <bean id="desk" class="cn.blmdz.spring.Desk"/>
+    
+</beans> 

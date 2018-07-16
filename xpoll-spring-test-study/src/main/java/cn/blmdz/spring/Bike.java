@@ -12,7 +12,7 @@ public class Bike implements Abc {
 
     @Override
     public void abc() {
-        // TODO Auto-generated method stub
+        System.out.println("Bike bean abc");
         
     }
 }
