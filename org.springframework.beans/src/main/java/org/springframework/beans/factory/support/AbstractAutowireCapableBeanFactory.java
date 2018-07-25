@@ -431,8 +431,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			logger.debug("Creating instance of bean '" + beanName + "'");
 		}
 		// Make sure bean class is actually resolved at this point.
+		// 锁定 class ，根据设置的 class 属性或者根据 className 来解析 class
 		resolveBeanClass(mbd, beanName);
 
+		// 验证及准备 overrides 方法 --> loopup-method replace-method
 		// Prepare method overrides.
 		try {
 			mbd.prepareMethodOverrides();
@@ -443,6 +445,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
+		    // 给 BeanPostProcessors 一个机会来返回代理来替代真正的实例
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
 			Object bean = resolveBeforeInstantiation(beanName, mbd);
 			if (bean != null) {
@@ -839,6 +842,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 在实例化后处理器之前应用，解决是否存在指定bean的实例化前快捷方式。
+	 * 
 	 * Apply before-instantiation post-processors, resolving whether there is a
 	 * before-instantiation shortcut for the specified bean.
 	 * @param beanName the name of the bean
@@ -847,6 +852,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	protected Object resolveBeforeInstantiation(String beanName, RootBeanDefinition mbd) {
 		Object bean = null;
+		// 如果尚未被解析
 		if (!Boolean.FALSE.equals(mbd.beforeInstantiationResolved)) {
 			// Make sure bean class is actually resolved at this point.
 			if (mbd.hasBeanClass() && !mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {

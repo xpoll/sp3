@@ -132,6 +132,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
+	 * 将结果记录至缓存并删除加载 Bean 过程中所记录的各种辅助状态
 	 * Add the given singleton object to the singleton cache of this factory.
 	 * <p>To be called for eager registration of singletons.
 	 * @param beanName the name of the bean
@@ -290,6 +291,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 
 	/**
+	 * 记录 Bean 加载状态，这样可以对循环依赖进行检测
 	 * Callback before singleton creation.
 	 * <p>Default implementation register the singleton as currently in creation.
 	 * @param beanName the name of the singleton about to be created
@@ -302,6 +304,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
+	 * 移除 Bean 加载状态
 	 * Callback after singleton creation.
 	 * <p>The default implementation marks the singleton as not in creation anymore.
 	 * @param beanName the name of the singleton that has been created

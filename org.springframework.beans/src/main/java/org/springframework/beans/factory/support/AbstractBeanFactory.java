@@ -235,6 +235,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		Object bean;
 
 		// Eagerly check singleton cache for manually registered singletons.
+		// 先试着从单例中获取Bean
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null && args == null) {
 			if (logger.isDebugEnabled()) {
@@ -246,6 +247,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					logger.debug("Returning cached instance of singleton bean '" + beanName + "'");
 				}
 			}
+			// 判断 Bean 是FactoryBean还是Bean. FactoryBean => return getObject(); Bean => return;
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
 
@@ -1405,6 +1407,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	/**
+	 * 判断 Bean 是FactoryBean还是Bean. FactoryBean => return getObject(); Bean => return;
+	 * 
 	 * Get the object for the given bean instance, either the bean
 	 * instance itself or its created object in case of a FactoryBean.
 	 * @param beanInstance the shared bean instance
@@ -1416,11 +1420,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected Object getObjectForBeanInstance(
 			Object beanInstance, String name, String beanName, RootBeanDefinition mbd) {
 
+	    // 如果指定的 name 是工厂相关（以&为前缀）且 beanInstance 又不是 FactoryBean 类型则验证不通过
 		// Don't let calling code try to dereference the factory if the bean isn't a factory.
 		if (BeanFactoryUtils.isFactoryDereference(name) && !(beanInstance instanceof FactoryBean)) {
 			throw new BeanIsNotAFactoryException(transformedBeanName(name), beanInstance.getClass());
 		}
 
+		// 现在我们有一个 bean 实例，这个实例可能是个正常的 bean 或者 FactoryBean
+		// 如果是一个 FactoryBean 我们使用它创建实例，但是如果用户想要直接获取工厂实例而不是工厂的 getObject 方法对应的实例那么传入的 name 应该加上 &
 		// Now we have the bean instance, which may be a normal bean or a FactoryBean.
 		// If it's a FactoryBean, we use it to create a bean instance, unless the
 		// caller actually wants a reference to the factory.
@@ -1430,6 +1437,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		Object object = null;
 		if (mbd == null) {
+		    // 尝试从缓存中加载 Bean
 			object = getCachedObjectForFactoryBean(beanName);
 		}
 		if (object == null) {

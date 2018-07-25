@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.  
 org/dtd/spring-beans.dtd">
-<beans profile="dev">
-    <bean id="bike" class="cn.blmdz.spring.Bike">
+<beans>
+    <bean id="bike2" class="cn.blmdz.spring.Bike">
         <property name="name">
             <value>摩拜</value>
         </property>
