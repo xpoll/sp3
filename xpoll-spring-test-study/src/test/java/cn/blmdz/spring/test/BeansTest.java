@@ -54,6 +54,8 @@ public class BeansTest {
         User abc = (User) bf.getBean("abc");
         System.out.println(abc.getUserName());
         System.out.println(abc.getEmail());
+        
+        System.out.println(new Object() == new Object());
 
     }
 }

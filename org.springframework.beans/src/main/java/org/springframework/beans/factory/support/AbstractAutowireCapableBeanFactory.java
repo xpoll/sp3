@@ -486,6 +486,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
 		}
 		if (instanceWrapper == null) {
+			// 根据指定的 bean 使用对应的策略创建新的实例，如：工厂方法、构造函数自动注入、简单初始化
 			instanceWrapper = createBeanInstance(beanName, mbd, args);
 		}
 		final Object bean = (instanceWrapper != null ? instanceWrapper.getWrappedInstance() : null);
@@ -494,6 +495,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Allow post-processors to modify the merged bean definition.
 		synchronized (mbd.postProcessingLock) {
 			if (!mbd.postProcessed) {
+				// MergedBeanDefinitionPostProcessors 应用， bean 合并后处理，Autowired 注解正是通过此方法实现诸如类型的预解析
 				applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
 				mbd.postProcessed = true;
 			}
@@ -501,6 +503,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// Eagerly cache singletons to be able to resolve circular references
 		// even when triggered by lifecycle interfaces like BeanFactoryAware.
+		// 是否需要提前曝光：单例&允许循环依赖&当前bean正在创建中，检测循环依赖 
 		boolean earlySingletonExposure = (mbd.isSingleton() && this.allowCircularReferences &&
 				isSingletonCurrentlyInCreation(beanName));
 		if (earlySingletonExposure) {
@@ -508,8 +511,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				logger.debug("Eagerly caching bean '" + beanName +
 						"' to allow for resolving potential circular references");
 			}
-			addSingletonFactory(beanName, new ObjectFactory() {
+			// 为避免后期循环依赖，可以在bean初始化完成之前将创建实例的 ObjectFactory 加入工厂
+			addSingletonFactory(beanName, new ObjectFactory<Object>() {
 				public Object getObject() throws BeansException {
+					// 对 Bean 再一次依赖引用，主要应用 SmartInstantiationAwareBeanPostProcessor
+					// 其中我们熟知的 AOP 就是在这里将 advice 动态织入 bean 中，若没有则直接返回 bean，不做任何处理
 					return getEarlyBeanReference(beanName, mbd, bean);
 				}
 			});
@@ -518,6 +524,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Initialize the bean instance.
 		Object exposedObject = bean;
 		try {
+			// 对 bean 进行填充，将各个属性值注入，其中，可能存在依赖于其他 bean 的属性，则会递归初始依赖 bean
 			populateBean(beanName, mbd, instanceWrapper);
 			if (exposedObject != null) {
 				exposedObject = initializeBean(beanName, exposedObject, mbd);
@@ -907,6 +914,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, Object[] args) {
 		// Make sure bean class is actually resolved at this point.
+		// 解析 Class
 		Class beanClass = resolveBeanClass(mbd, beanName);
 
 		if (beanClass != null && !Modifier.isPublic(beanClass.getModifiers()) && !mbd.isNonPublicAccessAllowed()) {
